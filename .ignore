@@ -1,0 +1,18 @@
+# === Database ===
+backend/avm.db
+*.db
+*.sqlite3
+
+# === Python Environment & Caches ===
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+
+# === Environment Variables / Secrets ===
+.env
+.env.local

@@ -6,6 +6,58 @@ class ORMModel(BaseModel):
     """Parent for every *Out schema: lets pydantic ready SQLAlchamey objects."""
     model_config = ConfigDict(from_attributes=True)
     
+# --- Login ---
+class LoginRequest(BaseModel):
+    username:str
+    password:str
+    
+# --- Token ---
+
+class TokenOut(BaseModel):
+    access_token:str
+    token_type:str = "bearer"
+    role:str
+    username:str
+    
+# --- Role ---
+
+class RoleOut(BaseModel):
+    id:int
+    role_name:str
+    
+# --- Staff Profile ---
+
+class StaffProfileBase(BaseModel):
+    full_name:str = Field(min_length=1,max_length=30)
+    phone:str = Field(min_length=10,max_length=18)
+    address:str | None = Field(default=None, max_length=50)
+    shift: Literal["day" , "night"] | None = None
+    
+class StaffProfileOut(ORMModel, StaffProfileBase):
+    id:int
+    is_duty_on : bool
+    
+class DutyUpdate(BaseModel):
+    on_duty:bool
+
+    
+# --- User ---
+class UserCreate(BaseModel):
+    username:str = Field(min_length=3, max_length = 30)
+    password:str = Field(min_length = 10, max_length=72)
+    role_name: Literal["Secretory", "Security"]
+    profile:StaffProfileBase
+
+class UserOut(ORMModel):
+    id:int
+    username:str
+    role:RoleOut
+    profile:StaffProfileOut | None  = None
+
+# --- Password ---
+class PasswordReset(BaseModel):
+    new_password:str = Field(min_length = 10, max_length=72)
+
 # --- Apartment ---
 
 class ApartmentBase(BaseModel):
@@ -54,7 +106,7 @@ class FlatOut(ORMModel, FlatBase):
 class ResidentBase(BaseModel):
     name:str = Field(min_length=1,max_length=30)
     phone:str = Field(min_length=1,max_length=14)
-    resident_type = Literal["owner","rental"]
+    resident_type:Literal["owner","rental"]
 
 class ResidentCreate(ResidentBase):
     flat_id : int

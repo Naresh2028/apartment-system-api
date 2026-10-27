@@ -2,9 +2,9 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import select
-from models import Flat, Block
-from database import get_db
-from schemas import FlatOut, FlatCreate
+from app.models import Flat, Block
+from app.database import get_db
+from app.schemas import FlatOut, FlatCreate
 
 router = APIRouter(prefix="/flats",tags=["flats"])
 

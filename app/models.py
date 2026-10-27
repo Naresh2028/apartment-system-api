@@ -3,7 +3,7 @@ from sqlalchemy import event
 from sqlalchemy import ForeignKey, String, UniqueConstraint, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from database import Base, engine
+from app.database import Base, engine
 
 
 def utcnow():
@@ -25,10 +25,24 @@ class User(Base):
     id:Mapped[int] = mapped_column(primary_key=True)
     username:Mapped[str] = mapped_column(String(45),unique=True)
     password_hash:Mapped[str] = mapped_column(String(60))
-    is_on_duty:Mapped[bool] = mapped_column(default=False)
     role_id:Mapped[int] = mapped_column(ForeignKey("roles.id"))
 
     role:Mapped["Role"] = relationship(back_populates="users")
+    profile:Mapped["StaffProfile"] = relationship(back_populates="user")
+    
+class StaffProfile(Base):
+    __tablename__ = "staff_profiles"
+    
+    id:Mapped[int] = mapped_column(primary_key=True)
+    full_name:Mapped[str] = mapped_column(String(30))
+    phone:Mapped[str] = mapped_column(String(16))
+    address:Mapped[str] = mapped_column(String(50))
+    shift:Mapped[str | None] = mapped_column(String(10))
+    is_on_duty:Mapped[bool] = mapped_column(default=False)
+    user_id:Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True)
+    
+    user:Mapped["User"] = relationship(back_populates="profile")
+
 
 class Flat(Base):
     __tablename__ = "flats"

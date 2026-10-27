@@ -1,5 +1,5 @@
-from database import Base, engine, SessionLocal
-from models import Flat, Resident, User, Visitor, Role, Apartment, Block, Vehicle
+from app.database import Base, engine, SessionLocal
+from app.models import Flat, Resident, User, Visitor, Role, Apartment, Block, Vehicle
 
 from sqlalchemy.exc import IntegrityError
 

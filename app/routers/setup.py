@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from database import get_db
-from models import Apartment, Block
-from schemas import ApartmentOut, ApartmentCreate, BlockOut, BlockCreate
+from app.database import get_db
+from app.models import Apartment, Block
+from app.schemas import ApartmentOut, ApartmentCreate, BlockOut, BlockCreate
 
 router = APIRouter(tags=["setup"])
 
